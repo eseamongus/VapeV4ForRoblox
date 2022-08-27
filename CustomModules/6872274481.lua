@@ -10829,3 +10829,82 @@ task.spawn(function()
 	end)
 end)
 
+runcode(function()
+	local BoostSilentFly = {["Enabled"] = false}
+	local velocity = {["Value"] = 35}
+	local clonethingy
+	
+	local testing = false
+	local partthingy
+	local blo = 0
+	BoostSilentFly = GuiLibrary["ObjectsThatCanBeSaved"]["BalatantWindow"]["Api"].CreateOptionsButton({
+		["Name"] = "Fly​‌‌​‌‌‌‌​‌​‌​​‌‌​‌​​‌‌​​​‌‌​‌‌‌‌​‌​‌​​‌​​‌​​‌​‌‌​‌‌​‌​​‌​​‌‌‌​​​	",
+		["Function"] = function(callback)
+			if callback then
+				lplr.Character.Archivable = true
+				clonethingy = lplr.Character:Clone()
+				clonethingy.Parent = workspace
+				clonethingy.Name = "clonethingy"
+				workspace.Camera.CameraSubject = clonethingy.Humanoid
+				partthingy = Instance.new("Part",workspace)
+				partthingy.Size = Vector3.new(2048,1,2048)
+				partthingy.CFrame = clonethingy.HumanoidRootPart.CFrame * CFrame.new(0,-4,0)
+				partthingy.Anchored = true
+				partthingy.Transparency = 1
+				RunLoops:BindToHeartbeat("BoostSilentFly", 1, function(delta)
+					clonethingy.HumanoidRootPart.CFrame = CFrame.new(entity.character.HumanoidRootPart.CFrame.X,clonethingy.HumanoidRootPart.CFrame.Y,entity.character.HumanoidRootPart.CFrame.Z)
+					clonethingy.HumanoidRootPart.Rotation = entity.character.HumanoidRootPart.Rotation
+				end)
+				task.spawn(function()
+					repeat
+						task.wait(0.1)
+						if blo < 15 then
+							blo = blo + 0.56
+						elseif blo < 50 then
+							blo = blo + 0.85
+						elseif blo < 100 then
+							blo = blo + 1.25
+						elseif blo < 150 then
+							blo = blo + 1.7
+						elseif blo < 200 then
+							blo = blo + 2
+						elseif blo < 250 then
+							blo = blo + 2.1
+						elseif blo < 300 then
+							blo = blo + 2.45
+						elseif blo < 350 then
+							blo = blo + 2.85
+						elseif blo > 400 then
+							blo = "400+"
+						end
+						if BoostSilentFly["Enabled"] == false then break end
+						entity.character.HumanoidRootPart.Velocity = entity.character.HumanoidRootPart.Velocity + Vector3.new(0,27,0)
+					until BoostSilentFly["Enabled"] == false
+				end)
+				repeat
+					task.wait(0.001)
+					if BoostSilentFly["Enabled"] == false then break end
+					clonethingy.HumanoidRootPart.CFrame = CFrame.new(entity.character.HumanoidRootPart.CFrame.X,clonethingy.HumanoidRootPart.CFrame.Y,entity.character.HumanoidRootPart.CFrame.Z)
+				until testing == true
+			else
+				createwarning("VAPE BLATANT","Disabling. Please wait!",8)
+				task.wait()
+				createwarning("VAPE BLATANT","You are currently "..blo.." blocks high",8)
+				clonethingy.HumanoidRootPart.Touched:Connect(function(ok)
+					if ok.Name == "HumanoidRootPart" and ok.Parent.Name == lplr.Name then
+						RunLoops:UnbindFromHeartbeat("BoostSilentFly")
+						testing = true
+						createwarning("VAPE BLATANT","Disabled Fly",5)
+						wait(0.4) -- made to bypass lagbacking kinda
+						createwarning("Fly/Speed", "Teleport Detected.\nFully disabling Speed/Fly for 0.8s.", 10)
+						workspace.Camera.CameraSubject = lplr.Character.Humanoid
+						clonethingy:Destroy()
+						partthingy:Destroy()
+						clonethingy.HumanoidRootPart.Touched:Disconnect()
+					end
+				end)
+			end
+		end,
+		["HoverText"] = "entirely made by liltypicscripter and qwertyui."
+	})
+end)
