@@ -10908,3 +10908,28 @@ runcode(function()
 		["HoverText"] = "entirely made by liltypicscripter and qwertyui."
 	})
 end)
+
+runcode(function()
+	local slowautowin = {["Enabled"] = false}
+
+	slowautowin = GuiLibrary["ObjectsThatCanBeSaved"]["BalatantWindow"]["Api"].CreateOptionsButton({
+		["Name"] = "SlowAutowin",
+		["Function"] = function(callback)
+			if callback then
+				local character = game.Players.LocalPlayer.Character
+				character.PrimaryPart.CFrame = character.PrimaryPart.CFrame * CFrame.new(0,999,0)
+				character.PrimaryPart:Destroy()
+				character.Head.Anchored = true
+                          else
+							createwarning("CatV5", "Disabling SlowAutowin", 5)
+							game.Players.LocalPlayer.Character.Head:Destroy()
+							if game.Players.LocalPlayer.Character.Humanoid.Health < 5 then 
+								local deathmanok = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").position
+								wait(1.5)
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(deathmanok)
+							end
+			end
+		end,
+		["HoverText"] = "Wins if everyone leaves"
+	})
+end)
